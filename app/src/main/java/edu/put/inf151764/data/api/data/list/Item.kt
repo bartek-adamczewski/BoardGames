@@ -1,4 +1,4 @@
-package edu.put.inf151764.data.api.data
+package edu.put.inf151764.data.api.data.list
 
 import org.simpleframework.xml.Attribute
 import org.simpleframework.xml.Element

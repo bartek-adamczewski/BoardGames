@@ -1,6 +1,6 @@
 package edu.put.inf151764.data.api
 
-import edu.put.inf151764.data.api.data.ItemsResponse
+import edu.put.inf151764.data.api.data.list.ItemsResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 
