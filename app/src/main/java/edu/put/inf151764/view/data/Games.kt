@@ -1,4 +1,4 @@
-package edu.put.inf151764
+package edu.put.inf151764.view.data
 
 data class Games(
     val title: String,

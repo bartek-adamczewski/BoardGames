@@ -1,24 +1,27 @@
-package edu.put.inf151764
+package edu.put.inf151764.view
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.*
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import org.w3c.dom.Text
-import java.io.File
+import dagger.hilt.android.AndroidEntryPoint
+import edu.put.inf151764.viewmodel.MainViewModel
+import edu.put.inf151764.R
 
-private lateinit var userName: String
-private lateinit var viewModel: MainViewModel
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+
+    private val viewModel: MainViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
         logIn()
 
@@ -46,13 +49,12 @@ class MainActivity : AppCompatActivity() {
             if (userNameField.text.toString() == "") {
                 Toast.makeText(this, "Empty username", Toast.LENGTH_SHORT).show() // nie działa
             } else{
-                userName = userNameField.text.toString()
+                //userName = userNameField.text.toString()
                 val text = findViewById<TextView>(R.id.nameText)
-                text.setText("Nazwa gracza: $userName")
+                //text.setText("Nazwa gracza: $userName")
                 dialog.dismiss()
                 Toast.makeText(this, "Syncing...", Toast.LENGTH_LONG).show()
             }
         }
     }
 }
-

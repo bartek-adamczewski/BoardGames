@@ -1,10 +1,12 @@
-package edu.put.inf151764
+package edu.put.inf151764.view.list
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import edu.put.inf151764.R
+import edu.put.inf151764.view.data.Games
 
 class GamesAdapter(var games: List<Games>, private val clickListener: GamesRecyclerViewListener) : RecyclerView.Adapter<GamesAdapter.GamesViewHolder>() {
 

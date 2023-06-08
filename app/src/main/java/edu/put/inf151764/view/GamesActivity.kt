@@ -1,20 +1,28 @@
-package edu.put.inf151764
+package edu.put.inf151764.view
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import dagger.hilt.android.AndroidEntryPoint
+import edu.put.inf151764.*
+import edu.put.inf151764.view.data.Games
+import edu.put.inf151764.view.list.GamesAdapter
+import edu.put.inf151764.view.list.GamesRecyclerViewListener
+import edu.put.inf151764.viewmodel.GamesViewModel
+import edu.put.inf151764.viewmodel.MainViewModel
 
-private lateinit var viewModel: GamesViewModel
-
+@AndroidEntryPoint
 class GamesActivity : AppCompatActivity(), GamesRecyclerViewListener {
+
+    private val viewModel: GamesViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_games)
-
-        viewModel = ViewModelProvider(this).get(GamesViewModel::class.java)
 
         val recyclerViewGames = findViewById<RecyclerView>(R.id.gamesRecyclerView)
         var gamesList = mutableListOf(
