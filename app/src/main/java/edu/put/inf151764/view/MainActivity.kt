@@ -9,9 +9,12 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import edu.put.inf151764.viewmodel.MainViewModel
 import edu.put.inf151764.R
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 
 @AndroidEntryPoint
@@ -23,13 +26,24 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        logIn()
+        viewModel.uiState.onEach {
+
+        }.launchIn(lifecycleScope)
+
+        viewModel.events.onEach {
+            when (it) {
+                MainViewModel.Event.ShowLoginPopup -> {
+
+                }
+            }
+        }.launchIn(lifecycleScope)
 
         val buttonGames = findViewById<ImageButton>(R.id.gamesButton)
         val buttonAddons = findViewById<ImageButton>(R.id.addonsButton)
 
         buttonGames.setOnClickListener {
-            startActivity(Intent(this, GamesActivity::class.java))
+            viewModel.test()
+//            startActivity(Intent(this, GamesActivity::class.java))
         }
 
         buttonAddons.setOnClickListener {
@@ -38,7 +52,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun logIn() {
+    fun showLoginPopup() {
         val popupView: View = layoutInflater.inflate(R.layout.log, null)
         val userNameField: EditText = popupView.findViewById(R.id.editUsername)
         val accept: Button = popupView.findViewById(R.id.okButton)
@@ -48,7 +62,7 @@ class MainActivity : AppCompatActivity() {
         accept.setOnClickListener() {
             if (userNameField.text.toString() == "") {
                 Toast.makeText(this, "Empty username", Toast.LENGTH_SHORT).show() // nie działa
-            } else{
+            } else {
                 //userName = userNameField.text.toString()
                 val text = findViewById<TextView>(R.id.nameText)
                 //text.setText("Nazwa gracza: $userName")
