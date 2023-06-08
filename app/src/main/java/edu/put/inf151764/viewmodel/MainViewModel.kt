@@ -8,10 +8,8 @@ import edu.put.inf151764.data.api.util.wrapApiCall
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import java.nio.channels.Channels
 import java.time.LocalDateTime
 import javax.inject.Inject
 
@@ -27,7 +25,8 @@ class MainViewModel @Inject constructor(
 
     fun test() = viewModelScope.launch {
         val test = wrapApiCall {
-            gamesApi.getGames("loutre_on_fire")
+//            gamesApi.getGames("loutre_on_fire")
+            gamesApi.getGameDetails(102794)
         }
         test
     }
