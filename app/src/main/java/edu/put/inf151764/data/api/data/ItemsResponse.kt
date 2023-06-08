@@ -1,21 +1,22 @@
 package edu.put.inf151764.data.api.data
 
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
+import org.simpleframework.xml.Attribute
+import org.simpleframework.xml.ElementList
+import org.simpleframework.xml.Root
 
-@Serializable
-data class ItemsResponse(
-    @SerialName("totalitems")
-    val totalItems: Int,
+@Root(name = "items", strict = false)
+data class ItemsResponse @JvmOverloads constructor(
+    @field:Attribute(name = "totalitems")
+    var totalItems: Int = 0,
 
-    @SerialName("termsofuse")
-    val termsOfUse: String,
+    @field:Attribute(name = "termsofuse")
+    var termsOfUse: String = "",
 
-    @SerialName("pubdate")
-    val pubDate: String,
+    @field:Attribute(name = "pubdate")
+    var pubDate: String = "",
 
-    @SerialName("item")
-    val items: List<Item>
+    @field:ElementList(name = "item", inline = true)
+    var items: List<Item> = mutableListOf()
 )
 
 

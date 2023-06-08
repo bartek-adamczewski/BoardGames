@@ -1,37 +1,38 @@
 package edu.put.inf151764.data.api.data
 
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
+import org.simpleframework.xml.Attribute
+import org.simpleframework.xml.Element
+import org.simpleframework.xml.Root
 
-@Serializable
-data class Item(
-    @SerialName("objecttype")
-    val objectType: String,
+@Root(name = "item", strict = false)
+data class Item @JvmOverloads constructor(
+    @field:Attribute(name = "objecttype")
+    var objectType: String = "",
 
-    @SerialName("objectid")
-    val objectId: String,
+    @field:Attribute(name = "objectid")
+    var objectId: String = "",
 
-    @SerialName("subtype")
-    val subType: String,
+    @field:Attribute(name = "subtype")
+    var subType: String = "",
 
-    @SerialName("collid")
-    val collId: String,
+    @field:Attribute(name = "collid")
+    var collId: String = "",
 
-    @SerialName("name")
-    val name: String,
+    @field:Element(name = "name")
+    var name: String = "",
 
-    @SerialName("yearpublished")
-    val yearPublished: Int,
+    @field:Element(name = "yearpublished")
+    var yearPublished: Int = 0,
 
-    @SerialName("image")
-    val image: String,
+    @field:Element(name = "image")
+    var image: String = "",
 
-    @SerialName("thumbnail")
-    val thumbnail: String,
+    @field:Element(name = "thumbnail")
+    var thumbnail: String = "",
 
-    @SerialName("status")
-    val status: Status,
+    @field:Element(name = "status")
+    var status: Status = Status(),
 
-    @SerialName("numplays")
-    val numPlays: Int
+    @field:Element(name = "numplays")
+    var numPlays: Int = 0
 )

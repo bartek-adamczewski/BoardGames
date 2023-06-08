@@ -1,34 +1,35 @@
 package edu.put.inf151764.data.api.data
 
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
+import org.simpleframework.xml.Attribute
+import org.simpleframework.xml.Root
 
-@Serializable
-data class Status(
-    @SerialName("own")
-    val own: Int,
 
-    @SerialName("prevowned")
-    val prevOwned: Int,
+@Root(name = "status", strict = false)
+data class Status @JvmOverloads constructor(
+    @field:Attribute(name = "own")
+    var own: Int = 0,
 
-    @SerialName("fortrade")
-    val forTrade: Int,
+    @field:Attribute(name = "prevowned")
+    var prevOwned: Int = 0,
 
-    @SerialName("want")
-    val want: Int,
+    @field:Attribute(name = "fortrade")
+    var forTrade: Int = 0,
 
-    @SerialName("wanttoplay")
-    val wantToPlay: Int,
+    @field:Attribute(name = "want")
+    var want: Int = 0,
 
-    @SerialName("wanttobuy")
-    val wantToBuy: Int,
+    @field:Attribute(name = "wanttoplay")
+    var wantToPlay: Int = 0,
 
-    @SerialName("wishlist")
-    val wishList: Int,
+    @field:Attribute(name = "wanttobuy")
+    var wantToBuy: Int = 0,
 
-    @SerialName("preordered")
-    val preOrdered: Int,
+    @field:Attribute(name = "wishlist")
+    var wishList: Int = 0,
 
-    @SerialName("lastmodified")
-    val lastModified: String
+    @field:Attribute(name = "preordered")
+    var preOrdered: Int = 0,
+
+    @field:Attribute(name = "lastmodified")
+    var lastModified: String = ""
 )

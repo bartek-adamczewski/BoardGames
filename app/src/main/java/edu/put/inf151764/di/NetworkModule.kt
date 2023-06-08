@@ -1,6 +1,5 @@
 package edu.put.inf151764.di
 
-import android.util.Xml
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -8,9 +7,8 @@ import dagger.hilt.components.SingletonComponent
 import edu.put.inf151764.data.api.GamesApi
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
+import retrofit2.converter.simplexml.SimpleXmlConverterFactory
 import java.util.concurrent.TimeUnit
-import kotlinx.serialization.*
-import kotlinx.serialization.xml.*
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -32,7 +30,7 @@ class NetworkModule {
             .Builder()
             .baseUrl("https://boardgamegeek.com/xmlapi2/")
             .client(okHttpClient)
-            .addConverterFactory(Xml)
+            .addConverterFactory(SimpleXmlConverterFactory.createNonStrict())
             .build()
     }
 
