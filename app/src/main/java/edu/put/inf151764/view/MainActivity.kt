@@ -7,8 +7,6 @@ import android.widget.*
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import edu.put.inf151764.viewmodel.MainViewModel
@@ -22,18 +20,30 @@ class MainActivity : AppCompatActivity() {
 
     private val viewModel: MainViewModel by viewModels()
 
+    private val usernameText by lazy {
+        findViewById<TextView>(R.id.nameText)
+    }
+
+    private val logoutButton by lazy {
+        findViewById<TextView>(R.id.logout_tv)
+    }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        viewModel.uiState.onEach {
-
+        viewModel.uiState.onEach { state ->
+            usernameText.text = state.userName ?: "No user"
         }.launchIn(lifecycleScope)
 
         viewModel.events.onEach {
             when (it) {
                 MainViewModel.Event.ShowLoginPopup -> {
-
+                    showLoginPopup()
+                }
+                MainViewModel.Event.ExitApp -> {
+                    this.finish()
                 }
             }
         }.launchIn(lifecycleScope)
@@ -42,14 +52,16 @@ class MainActivity : AppCompatActivity() {
         val buttonAddons = findViewById<ImageButton>(R.id.addonsButton)
 
         buttonGames.setOnClickListener {
-            viewModel.test()
-//            startActivity(Intent(this, GamesActivity::class.java))
+            startActivity(Intent(this, GamesActivity::class.java))
         }
 
         buttonAddons.setOnClickListener {
             startActivity(Intent(this, GamesActivity::class.java))
         }
 
+        logoutButton.setOnClickListener {
+            viewModel.onLogoutClicked()
+        }
     }
 
     fun showLoginPopup() {
@@ -63,8 +75,8 @@ class MainActivity : AppCompatActivity() {
             if (userNameField.text.toString() == "") {
                 Toast.makeText(this, "Empty username", Toast.LENGTH_SHORT).show() // nie działa
             } else {
-                //userName = userNameField.text.toString()
-                val text = findViewById<TextView>(R.id.nameText)
+
+                viewModel.onUserPicked(userName = userNameField.text.toString())
                 //text.setText("Nazwa gracza: $userName")
                 dialog.dismiss()
                 Toast.makeText(this, "Syncing...", Toast.LENGTH_LONG).show()

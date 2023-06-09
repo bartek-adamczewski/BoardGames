@@ -5,17 +5,17 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.put.inf151764.data.api.GamesApi
 import edu.put.inf151764.data.api.util.wrapApiCall
+import edu.put.inf151764.repo.GamesRepo
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val gamesApi: GamesApi
+    private val gamesApi: GamesApi,
+    private val repository: GamesRepo
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(State.DEFAULT)
@@ -23,23 +23,39 @@ class MainViewModel @Inject constructor(
     private val eventChannel = Channel<Event>(Channel.CONFLATED)
     val events = eventChannel.receiveAsFlow()
 
+    init {
+        viewModelScope.launch {
+            if (!repository.isUserLogged()) {
+                eventChannel.send(Event.ShowLoginPopup)
+            }
+        }
+        viewModelScope.launch {
+            repository.getUser().collect { user ->
+                _uiState.update { state ->
+                    state.copy(userName = user?.name)
+                }
+            }
+        }
+    }
+
     fun test() = viewModelScope.launch {
         val test = wrapApiCall {
-//            gamesApi.getGames("loutre_on_fire")
-            gamesApi.getGameDetails(102794)
+            gamesApi.getGames("loutre_on_fire")
+//            gamesApi.getGameDetails(102794)
         }
         test
     }
 
     fun onLogoutClicked() = viewModelScope.launch {
-
+        repository.clearDb()
+        eventChannel.send(Event.ExitApp)
     }
 
     fun onUserPicked(userName: String) = viewModelScope.launch {
-
+        repository.addUser(userName)
     }
 
-    fun onSynchronizeClicked()= viewModelScope.launch {
+    fun onSynchronizeClicked() = viewModelScope.launch {
 
     }
 
@@ -56,6 +72,7 @@ class MainViewModel @Inject constructor(
     }
 
     sealed class Event {
-        object ShowLoginPopup: Event()
+        object ShowLoginPopup : Event()
+        object ExitApp : Event()
     }
 }

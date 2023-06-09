@@ -30,9 +30,6 @@ data class Item @JvmOverloads constructor(
     @field:Element(name = "thumbnail")
     var thumbnail: String = "",
 
-    @field:Element(name = "status")
-    var status: Status = Status(),
-
     @field:Element(name = "numplays")
     var numPlays: Int = 0
 )
